@@ -1,3 +1,7 @@
 .chart-container{
     margin-bottom: 40px;
 }
+
+.chart-container h2 {
+    text-align: center;
+}
