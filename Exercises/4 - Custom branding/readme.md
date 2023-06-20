@@ -51,7 +51,7 @@ Sigue estos pasos para personalizar los idiomas y sus valores desde un flujo de 
 6. Busca el valor `español`, haz clic en él y marca la opción `Habilitado`.
 7. Marca el valor `Predeterminado` como verdadero para establecerlo como idioma por defecto.
 8. En la parte inferior de la opción `Predeterminado`, se muestran las distintas páginas para las que se dispone de traducciones en el flujo correspondiente. Azure B2C ya proporciona traducciones por defecto en cada una de ellas, pero se pueden personalizar.
-9. Busca la opción `Página unificada de inicio de sesión o de registro` y abre el desplegable.
+9. Busca la opción `Página de registro de cuenta local` y abre el desplegable.
 10. Haz clic en `Descargar valores predeterminados (es)` para descargar la lista de traducciones.
 11. Añade al final del archivo una nueva entrada o utiliza el archivo `spanish.json`:
 ```json
