@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TrustFrameworkPolicy
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
+  DeploymentMode="Development"
+  UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights"
+  PolicySchemaVersion="0.3.0.0"
+  TenantId="dotnet2023workshop.onmicrosoft.com"
+  PolicyId="B2C_1A_custom_signup_signin"
+  PublicPolicyUri="http://dotnet2023workshop.onmicrosoft.com/B2C_1A_custom_signup_signin">
+
+  <BasePolicy>
+    <TenantId>dotnet2023workshop.onmicrosoft.com</TenantId>
+    <PolicyId>B2C_1A_TrustFrameworkExtensions</PolicyId>
+  </BasePolicy>
+
+  <BuildingBlocks>
+    <ClaimsSchema>
+      <!-- Question 1 Claims -->
+      <ClaimType Id="AskForInformation_header">
+        <DisplayName> Quremos saber un poco más de ti. A continuación vamos a hacerte unas preguntas para conocer ciertos aspectos relacionados con el workshop.</DisplayName>
+        <DataType>string</DataType>
+        <UserInputType>Paragraph</UserInputType>
+      </ClaimType>
+      <ClaimType Id="extension_Question1">
+        <DisplayName>¿Sabes algo de flujos de autenticación?</DisplayName>
+        <DataType>string</DataType>
+        <UserInputType>RadioSingleSelect</UserInputType>
+        <Restriction>
+            <Enumeration Text="Si" Value="True" SelectByDefault="false" />
+            <Enumeration Text="No" Value="False" SelectByDefault="false" />
+        </Restriction>
+      </ClaimType>
+      <ClaimType Id="question1ApiBody">
+        <DisplayName>Json</DisplayName>
+        <DataType>string</DataType>
+        <AdminHelpText>Json</AdminHelpText>
+        <UserHelpText>Json</UserHelpText>
+      </ClaimType>
+      <!-- Question 2 Claims -->
+      <ClaimType Id="extension_Question2">
+        <DisplayName>¿Te suena OIDC?</DisplayName>
+        <DataType>string</DataType>
+        <UserInputType>RadioSingleSelect</UserInputType>
+        <Restriction>
+            <Enumeration Text="Si" Value="True" SelectByDefault="false" />
+            <Enumeration Text="No" Value="False" SelectByDefault="false" />
+        </Restriction>
+      </ClaimType>
+      <ClaimType Id="question2ApiBody">
+        <DisplayName>Json</DisplayName>
+        <DataType>string</DataType>
+        <AdminHelpText>Json</AdminHelpText>
+        <UserHelpText>Json</UserHelpText>
+      </ClaimType> 
+      <!-- Question 3 Claims -->
+      <ClaimType Id="extension_Question3">
+        <DisplayName>¿Has gestionado alguna vez Azure AD?</DisplayName>
+        <DataType>string</DataType>
+        <UserInputType>RadioSingleSelect</UserInputType>
+        <Restriction>
+            <Enumeration Text="Si" Value="True" SelectByDefault="false" />
+            <Enumeration Text="No" Value="False" SelectByDefault="false" />
+        </Restriction>
+      </ClaimType>
+      <ClaimType Id="question3ApiBody">
+        <DisplayName>Json</DisplayName>
+        <DataType>string</DataType>
+        <AdminHelpText>Json</AdminHelpText>
+        <UserHelpText>Json</UserHelpText>
+      </ClaimType> 
+      <!-- Question 4 Claims -->
+      <ClaimType Id="extension_Question4">
+        <DisplayName>¿Has usado B2C?</DisplayName>
+        <DataType>string</DataType>
+        <UserInputType>RadioSingleSelect</UserInputType>
+        <Restriction>
+            <Enumeration Text="Si" Value="True" SelectByDefault="false" />
+            <Enumeration Text="No" Value="False" SelectByDefault="false" />
+        </Restriction>
+      </ClaimType>
+      <ClaimType Id="question4ApiBody">
+        <DisplayName>Json</DisplayName>
+        <DataType>string</DataType>
+        <AdminHelpText>Json</AdminHelpText>
+        <UserHelpText>Json</UserHelpText>
+      </ClaimType>
+      <!-- Ask for information flag -->
+      <ClaimType Id="extension_mustAskForInformation">
+	    <DisplayName>Must ask for information</DisplayName>
+	    <DataType>boolean</DataType>
+	    <UserHelpText>Specifies whether user must be asked</UserHelpText>
+	  </ClaimType>
+    </ClaimsSchema>
+
+
+    <ClaimsTransformations>
+      <ClaimsTransformation Id="GenerateQuestion1ApiBody" TransformationMethod="GenerateJson">
+        <InputClaims>
+          <InputClaim ClaimTypeReferenceId="extension_Question1" TransformationClaimType="inputClaim"/>
+        </InputClaims>
+        <OutputClaims>
+          <OutputClaim ClaimTypeReferenceId="question1ApiBody" TransformationClaimType="outputClaim"/>
+        </OutputClaims>
+      </ClaimsTransformation>
+      <ClaimsTransformation Id="GenerateQuestion2ApiBody" TransformationMethod="GenerateJson">
+        <InputClaims>
+          <InputClaim ClaimTypeReferenceId="extension_Question2" TransformationClaimType="inputClaim"/>
+        </InputClaims>
+        <OutputClaims>
+          <OutputClaim ClaimTypeReferenceId="question2ApiBody" TransformationClaimType="outputClaim"/>
+        </OutputClaims>
+      </ClaimsTransformation>
+      <ClaimsTransformation Id="GenerateQuestion3ApiBody" TransformationMethod="GenerateJson">
+        <InputClaims>
+          <InputClaim ClaimTypeReferenceId="extension_Question3" TransformationClaimType="inputClaim"/>
+        </InputClaims>
+        <OutputClaims>
+          <OutputClaim ClaimTypeReferenceId="question3ApiBody" TransformationClaimType="outputClaim"/>
+        </OutputClaims>
+      </ClaimsTransformation>
+      <ClaimsTransformation Id="GenerateQuestion4ApiBody" TransformationMethod="GenerateJson">
+        <InputClaims>
+          <InputClaim ClaimTypeReferenceId="extension_Question4" TransformationClaimType="inputClaim"/>
+        </InputClaims>
+        <OutputClaims>
+          <OutputClaim ClaimTypeReferenceId="question4ApiBody" TransformationClaimType="outputClaim"/>
+        </OutputClaims>
+      </ClaimsTransformation>
+    </ClaimsTransformations>
+
+    <ContentDefinitions>
+      <!-- This content definition is to render an error page that displays unhandled errors. -->
+      <ContentDefinition Id="api.error">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/exception.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:globalexception:1.2.1</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Error page</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.idpselections">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/idpSelector.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:providerselection:1.2.1</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Idp selection page</Item>
+          <Item Key="language.intro">Sign in</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.idpselections.signup">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/idpSelector.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:providerselection:1.2.1</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Idp selection page</Item>
+          <Item Key="language.intro">Sign up</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.signuporsignin">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/unified.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:unifiedssp:2.1.5</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Signin and Signup</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.selfasserted">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/selfAsserted.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.7</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Collect information from user page</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.selfasserted.profileupdate">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/selfAsserted.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.7</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Collect information from user page</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.localaccountsignup">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/selfAsserted.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.7</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Local account sign up page</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.localaccountpasswordreset">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/selfAsserted.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.7</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Local account change password page</Item>
+        </Metadata>
+      </ContentDefinition>
+
+      <ContentDefinition Id="api.localaccountsignin">
+        <LoadUri>https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/ocean_blue/selfAsserted.html</LoadUri>
+        <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+        <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.7</DataUri>
+        <Metadata>
+          <Item Key="DisplayName">Collect information from user page</Item>
+        </Metadata>
+      </ContentDefinition>
+    </ContentDefinitions>
+  </BuildingBlocks>
+
+
+  <ClaimsProviders>
+    <ClaimsProvider>
+      <DisplayName>Local Account</DisplayName>
+      <TechnicalProfiles>
+        <TechnicalProfile Id="ReadFormStep1">
+          <DisplayName>Read Form Step 1</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+            <Item Key="setting.showCancelButton">false</Item>
+          </Metadata>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="AskForInformation_header" />
+            <OutputClaim ClaimTypeReferenceId="extension_Question1" />
+          </OutputClaims>
+          <OutputClaimsTransformations>
+            <OutputClaimsTransformation ReferenceId="GenerateQuestion1ApiBody" />
+          </OutputClaimsTransformations>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+        <TechnicalProfile Id="ReadFormStep2">
+          <DisplayName>Read Form Step 2</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+            <Item Key="setting.showCancelButton">false</Item>
+          </Metadata>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="extension_Question2" />
+          </OutputClaims>
+          <OutputClaimsTransformations>
+            <OutputClaimsTransformation ReferenceId="GenerateQuestion2ApiBody" />
+          </OutputClaimsTransformations>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+        <TechnicalProfile Id="ReadFormStep3">
+          <DisplayName>Read Form Step 3</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+            <Item Key="setting.showCancelButton">false</Item>
+          </Metadata>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="extension_Question3" />
+          </OutputClaims>
+          <OutputClaimsTransformations>
+            <OutputClaimsTransformation ReferenceId="GenerateQuestion3ApiBody" />
+          </OutputClaimsTransformations>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+        <TechnicalProfile Id="ReadFormStep4">
+          <DisplayName>Read Form Step 4</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+            <Item Key="setting.showCancelButton">false</Item>
+          </Metadata>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="extension_Question4" />
+          </OutputClaims>
+          <OutputClaimsTransformations>
+            <OutputClaimsTransformation ReferenceId="GenerateQuestion4ApiBody" />
+          </OutputClaimsTransformations>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+      </TechnicalProfiles>
+    </ClaimsProvider>
+
+    <ClaimsProvider>
+      <DisplayName>Azure Active Directory</DisplayName>
+      <TechnicalProfiles>  
+
+        <TechnicalProfile Id="AAD-UserReadUsingObjectId">
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="extension_mustAskForInformation" />
+            <OutputClaim ClaimTypeReferenceId="extension_Question1" />
+            <OutputClaim ClaimTypeReferenceId="extension_Question2" />
+            <OutputClaim ClaimTypeReferenceId="extension_Question3" />
+            <OutputClaim ClaimTypeReferenceId="extension_Question4" />
+          </OutputClaims>
+        </TechnicalProfile>
+
+        <TechnicalProfile Id="AAD-UserWriteUsingLogonEmail">
+          <PersistedClaims>
+            <PersistedClaim ClaimTypeReferenceId="extension_mustAskForInformation" DefaultValue="true" />
+          </PersistedClaims>
+        </TechnicalProfile>
+
+        <TechnicalProfile Id="AAD-UserRemoveMustAskForInformationUsingObjectId">
+          <Metadata>
+            <Item Key="Operation">DeleteClaims</Item>
+          </Metadata>
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="objectId" Required="true" />
+          </InputClaims>
+          <PersistedClaims>
+            <PersistedClaim ClaimTypeReferenceId="objectId" />
+            <PersistedClaim ClaimTypeReferenceId="extension_mustAskForInformation" />            
+          </PersistedClaims>
+          <IncludeTechnicalProfile ReferenceId="AAD-Common" />
+        </TechnicalProfile>
+
+        <TechnicalProfile Id="AAD-UserWriteQuestionsUsingObjectId">
+          <Metadata>
+            <Item Key="Operation">Write</Item>
+            <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">true</Item>
+          </Metadata>
+          <IncludeInSso>false</IncludeInSso>
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="objectId" Required="true" />
+          </InputClaims>
+          <PersistedClaims>
+            <PersistedClaim ClaimTypeReferenceId="objectId" />
+            <PersistedClaim ClaimTypeReferenceId="extension_Question1" PartnerClaimType="extension_Question1" />
+            <PersistedClaim ClaimTypeReferenceId="extension_Question2" PartnerClaimType="extension_Question2" />
+            <PersistedClaim ClaimTypeReferenceId="extension_Question3" PartnerClaimType="extension_Question3" />
+            <PersistedClaim ClaimTypeReferenceId="extension_Question4" PartnerClaimType="extension_Question4" />
+
+          </PersistedClaims>
+          <IncludeTechnicalProfile ReferenceId="AAD-Common" />
+        </TechnicalProfile>
+
+      </TechnicalProfiles>
+    </ClaimsProvider>
+  </ClaimsProviders>
+
+  <UserJourneys>
+    <UserJourney Id="SignUpOrSignInCustom">
+        <OrchestrationSteps>
+
+            <OrchestrationStep Order="1" Type="CombinedSignInAndSignUp" ContentDefinitionReferenceId="api.signuporsignin">
+            <ClaimsProviderSelections>
+                <ClaimsProviderSelection ValidationClaimsExchangeId="LocalAccountSigninEmailExchange" />
+            </ClaimsProviderSelections>
+            <ClaimsExchanges>
+                <ClaimsExchange Id="LocalAccountSigninEmailExchange" TechnicalProfileReferenceId="SelfAsserted-LocalAccountSignin-Email" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <OrchestrationStep Order="2" Type="ClaimsExchange">
+            <Preconditions>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
+                <Value>objectId</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+            </Preconditions>
+            <ClaimsExchanges>
+                <ClaimsExchange Id="SignUpWithLogonEmailExchange" TechnicalProfileReferenceId="LocalAccountSignUpWithLogonEmail" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <!-- This step reads any user attributes that we may not have received when in the token. -->
+            <OrchestrationStep Order="3" Type="ClaimsExchange">
+            <ClaimsExchanges>
+                <ClaimsExchange Id="AADUserReadWithObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+
+            <!--Demo: check if change password is required. If yes, ask the user to reset the password-->
+            <OrchestrationStep Order="4" Type="ClaimsExchange">
+            <Preconditions>
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                <Value>objectId</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Value>True</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+            </Preconditions>        
+            <ClaimsExchanges>
+                <ClaimsExchange Id="ReadFormStep1" TechnicalProfileReferenceId="ReadFormStep1" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <OrchestrationStep Order="5" Type="ClaimsExchange">
+            <Preconditions>
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                <Value>objectId</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Value>True</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+            </Preconditions>        
+            <ClaimsExchanges>
+                <ClaimsExchange Id="ReadFormStep2" TechnicalProfileReferenceId="ReadFormStep2" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <OrchestrationStep Order="6" Type="ClaimsExchange">
+            <Preconditions>
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                <Value>objectId</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Value>True</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+            </Preconditions>        
+            <ClaimsExchanges>
+                <ClaimsExchange Id="ReadFormStep3" TechnicalProfileReferenceId="ReadFormStep3" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <OrchestrationStep Order="7" Type="ClaimsExchange">
+            <Preconditions>
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                <Value>objectId</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Value>True</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+            </Preconditions>        
+            <ClaimsExchanges>
+                <ClaimsExchange Id="ReadFormStep4" TechnicalProfileReferenceId="ReadFormStep4" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <OrchestrationStep Order="8" Type="ClaimsExchange">
+            <Preconditions>
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                <Value>objectId</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Value>True</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+            </Preconditions>        
+            <ClaimsExchanges>
+                <ClaimsExchange Id="WriteQuestions" TechnicalProfileReferenceId="AAD-UserWriteQuestionsUsingObjectId" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <OrchestrationStep Order="9" Type="ClaimsExchange">
+            <Preconditions>
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                <Value>objectId</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                <Value>extension_mustAskForInformation</Value>
+                <Value>True</Value>
+                <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>            
+            </Preconditions>        
+            <ClaimsExchanges>
+                <ClaimsExchange Id="RemoveAskForInformation" TechnicalProfileReferenceId="AAD-UserRemoveMustAskForInformationUsingObjectId" />
+            </ClaimsExchanges>
+            </OrchestrationStep>
+
+            <OrchestrationStep Order="10" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+
+        </OrchestrationSteps>
+        <ClientDefinition ReferenceId="DefaultWeb" />
+    </UserJourney>
+  </UserJourneys>
+
+  <RelyingParty>
+    <DefaultUserJourney ReferenceId="SignUpOrSignInCustom" />
+    <Endpoints>
+      <!--points to refresh token journey when app makes refresh token request-->
+      <Endpoint Id="Token" UserJourneyReferenceId="RedeemRefreshToken" />
+    </Endpoints>
+    <UserJourneyBehaviors>
+      <JourneyInsights TelemetryEngine="ApplicationInsights" InstrumentationKey="9a45c12b-f021-425c-b50e-9834ddcfcdee" DeveloperMode="true" ClientEnabled="false" ServerEnabled="true" TelemetryVersion="1.0.0" />
+      <ScriptExecution>Allow</ScriptExecution>
+    </UserJourneyBehaviors>
+    <TechnicalProfile Id="PolicyProfile">
+      <DisplayName>PolicyProfile</DisplayName>
+      <Protocol Name="OpenIdConnect" />
+      <OutputClaims>
+        <OutputClaim ClaimTypeReferenceId="displayName" />
+        <OutputClaim ClaimTypeReferenceId="givenName" />
+        <OutputClaim ClaimTypeReferenceId="surname" />
+        <OutputClaim ClaimTypeReferenceId="email" />
+        <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub"/>
+        <OutputClaim ClaimTypeReferenceId="tenantId" AlwaysUseDefaultValue="true" DefaultValue="{Policy:TenantObjectId}" />
+
+        <OutputClaim ClaimTypeReferenceId="extension_Question1" />
+        <OutputClaim ClaimTypeReferenceId="extension_Question2" />
+        <OutputClaim ClaimTypeReferenceId="extension_Question3" />
+        <OutputClaim ClaimTypeReferenceId="extension_Question4" />
+      </OutputClaims>
+      <SubjectNamingInfo ClaimType="sub" />
+    </TechnicalProfile>
+  </RelyingParty>
+</TrustFrameworkPolicy>

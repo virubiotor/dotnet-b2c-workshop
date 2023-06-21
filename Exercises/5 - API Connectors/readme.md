@@ -50,6 +50,12 @@ Los conectores de Api permiten customizar el flujo de login/registro del usuario
 
 ## Crear conector que valide un captcha usando ReCaptcha
 
+<br>
+
+<details>
+   <summary>Crear Azure Function que valide un token ReCaptcha: Informativo</summary>
+   <div class="description">
+
 ### Crear Azure Function que valide un token ReCaptcha
 
 1. Con una cuenta de google, accede a la consola de administración y configura una aplicación para usar ReCaptcha v2: `https://ayudapanel.com/temas-ayuda/servicios-externos/google-recaptcha.html`
@@ -77,7 +83,11 @@ Los conectores de Api permiten customizar el flujo de login/registro del usuario
    - BASIC_AUTH_USERNAME: Usuario usado en la configuración del conector de B2C, `admin`.
    - BASIC_AUTH_PASSWORD: Contraseña utilizada en la configuración del conector de B2C, `admin`.
    - CAPTCHA_SECRET_KEY: Clave secreta de ReCaptcha generada previamente.
+   </div>
+</details>
 
+<br>
+<br>
 
 ### Crear conector de Azure B2C que llame a la función de Azure
 
