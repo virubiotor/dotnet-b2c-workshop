@@ -1,7 +1,7 @@
 ---
 page_type: sample
 name: Angular single-page application that authenticates users with Azure AD B2C and calls a protected .NET Core web API
-description: An Angular single-page application that authenticates users with Azure AD B2C and calls a protected .NET Core web API
+description: An Angular single-page application that authenticates users with Azure AD B2C and calls a protected .NET Core web API and Graph API
 languages:
  - javascript
  - typescript
@@ -45,8 +45,8 @@ This sample demonstrates an Angular single-page application (SPA) calling a ASP.
 1. The client Angular SPA uses [MSAL Angular](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-angular) to sign-in a user and obtain a JWT [Access Token](https://aka.ms/access-tokens) from **Azure AD B2C**.
 1. The access token is used as a *bearer* token to authorize the user to call the .NET Core web API protected by **Azure AD B2C**.
 1. The service uses the [Microsoft.Identity.Web](https://aka.ms/microsoft-identity-web) to protect the Web api, check permissions and validate tokens.
-
-![Scenario Image](./ReadmeFiles/topology.png)
+1. The API calls Graph API to retrieve custom claims about the users
+![Scenario Image](./topology.png)
 
 ## Contents
 
@@ -57,6 +57,7 @@ This sample demonstrates an Angular single-page application (SPA) calling a ASP.
 | `API/TodoListAPI/appsettings.json`  | Authentication parameters for API project reside here.     |
 | `API/TodoListAPI/Startup.cs`        | Microsoft.Identity.Web is initialized here.                |
 | `API/TodoListAPI/Controllers/TodoListController.cs` | Contains logic for controlling access to data. |
+| `API/TodoListAPI/Controllers/UsersControllers.cs` | Contains logic for retrieving a Graph API token and calling it to obtain custom attributes of Azure B2C users |
 
 ## Prerequisites
 
@@ -117,6 +118,10 @@ As a first step you'll need to:
 #### Create User Flows and Custom Policies
 
 Please refer to: [Tutorial: Create user flows in Azure Active Directory B2C](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-user-flows)
+
+Upload custom policy `CustomPolicies/policies/CustomSignUpOrSignin.xml` for the SUSI flow.
+
+Retrieve `b2c-extensions-app` applicationId and update values under `CustomAttributes`section on `appsettings.json` file
 
 #### Add External Identity Providers
 
@@ -225,6 +230,7 @@ Then, open a separate command line and run:
 1. Open your browser and navigate to `http://localhost:4200`.
 2. Sign-in using the button on the top-right corner.
 3. Select the **TodoList** button on the navigation bar to access your todo list.
+4. Select the **UserAnswers** button on the navigation bar to check users custom attributes
 
 > :information_source: Did the sample not work for you as expected? Then please reach out to us using the [GitHub Issues](../../../../issues) page.
 
