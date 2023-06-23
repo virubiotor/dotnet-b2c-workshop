@@ -32,12 +32,6 @@
             <Enumeration Text="No" Value="False" SelectByDefault="false" />
         </Restriction>
       </ClaimType>
-      <ClaimType Id="question1ApiBody">
-        <DisplayName>Json</DisplayName>
-        <DataType>string</DataType>
-        <AdminHelpText>Json</AdminHelpText>
-        <UserHelpText>Json</UserHelpText>
-      </ClaimType>
       <!-- Question 2 Claims -->
       <ClaimType Id="extension_Question2">
         <DisplayName>¿Te suena OIDC?</DisplayName>
@@ -48,12 +42,6 @@
             <Enumeration Text="No" Value="False" SelectByDefault="false" />
         </Restriction>
       </ClaimType>
-      <ClaimType Id="question2ApiBody">
-        <DisplayName>Json</DisplayName>
-        <DataType>string</DataType>
-        <AdminHelpText>Json</AdminHelpText>
-        <UserHelpText>Json</UserHelpText>
-      </ClaimType> 
       <!-- Question 3 Claims -->
       <ClaimType Id="extension_Question3">
         <DisplayName>¿Has gestionado alguna vez Azure AD?</DisplayName>
@@ -64,12 +52,6 @@
             <Enumeration Text="No" Value="False" SelectByDefault="false" />
         </Restriction>
       </ClaimType>
-      <ClaimType Id="question3ApiBody">
-        <DisplayName>Json</DisplayName>
-        <DataType>string</DataType>
-        <AdminHelpText>Json</AdminHelpText>
-        <UserHelpText>Json</UserHelpText>
-      </ClaimType> 
       <!-- Question 4 Claims -->
       <ClaimType Id="extension_Question4">
         <DisplayName>¿Has usado B2C?</DisplayName>
@@ -80,52 +62,52 @@
             <Enumeration Text="No" Value="False" SelectByDefault="false" />
         </Restriction>
       </ClaimType>
-      <ClaimType Id="question4ApiBody">
+      <!-- Ask for information flag -->
+      <ClaimType Id="extension_mustAskForInformation">
+        <DisplayName>Must ask for information</DisplayName>
+        <DataType>boolean</DataType>
+        <UserHelpText>Specifies whether user must be asked</UserHelpText> 
+      </ClaimType>
+      <!-- Ask for register code -->
+      <ClaimType Id="RegistrationCode_ValidationError">
+        <DisplayName>El código de registro es incorrecto. Pregunta a los ponentes e intentalo de nuevo.</DisplayName>
+        <DataType>string</DataType>
+        <UserInputType>Paragraph</UserInputType>
+      </ClaimType>
+      <ClaimType Id="RegistrationCode_required">
+        <DisplayName>De cara a completar el proceso de registro, es necesario validar tu identidad. Por favor introduce el código de registro a continuación</DisplayName>
+        <DataType>string</DataType>
+        <UserInputType>Paragraph</UserInputType>
+      </ClaimType>
+      <ClaimType Id="extension_RegistrationCode">
+        <DisplayName>Código de Registro</DisplayName>
+        <DataType>string</DataType>
+        <AdminHelpText>Número de socio</AdminHelpText>
+        <UserHelpText>Número de socio</UserHelpText>
+        <UserInputType>TextBox</UserInputType>
+      </ClaimType>
+      <ClaimType Id="validateUserBody">
         <DisplayName>Json</DisplayName>
         <DataType>string</DataType>
         <AdminHelpText>Json</AdminHelpText>
         <UserHelpText>Json</UserHelpText>
+      </ClaimType> 
+      <ClaimType Id="extension_isValidUser">
+        <DisplayName>Is Valid User</DisplayName>
+        <DataType>boolean</DataType>
+        <AdminHelpText>Is Valid User</AdminHelpText>
+        <UserHelpText>Is Valid User</UserHelpText>
       </ClaimType>
-      <!-- Ask for information flag -->
-      <ClaimType Id="extension_mustAskForInformation">
-	    <DisplayName>Must ask for information</DisplayName>
-	    <DataType>boolean</DataType>
-	    <UserHelpText>Specifies whether user must be asked</UserHelpText>
-	  </ClaimType>
     </ClaimsSchema>
 
 
     <ClaimsTransformations>
-      <ClaimsTransformation Id="GenerateQuestion1ApiBody" TransformationMethod="GenerateJson">
+      <ClaimsTransformation Id="GenerateValidateUserBody" TransformationMethod="GenerateJson">
         <InputClaims>
-          <InputClaim ClaimTypeReferenceId="extension_Question1" TransformationClaimType="inputClaim"/>
+          <InputClaim ClaimTypeReferenceId="extension_RegistrationCode" TransformationClaimType="RegistrationCode"/>
         </InputClaims>
         <OutputClaims>
-          <OutputClaim ClaimTypeReferenceId="question1ApiBody" TransformationClaimType="outputClaim"/>
-        </OutputClaims>
-      </ClaimsTransformation>
-      <ClaimsTransformation Id="GenerateQuestion2ApiBody" TransformationMethod="GenerateJson">
-        <InputClaims>
-          <InputClaim ClaimTypeReferenceId="extension_Question2" TransformationClaimType="inputClaim"/>
-        </InputClaims>
-        <OutputClaims>
-          <OutputClaim ClaimTypeReferenceId="question2ApiBody" TransformationClaimType="outputClaim"/>
-        </OutputClaims>
-      </ClaimsTransformation>
-      <ClaimsTransformation Id="GenerateQuestion3ApiBody" TransformationMethod="GenerateJson">
-        <InputClaims>
-          <InputClaim ClaimTypeReferenceId="extension_Question3" TransformationClaimType="inputClaim"/>
-        </InputClaims>
-        <OutputClaims>
-          <OutputClaim ClaimTypeReferenceId="question3ApiBody" TransformationClaimType="outputClaim"/>
-        </OutputClaims>
-      </ClaimsTransformation>
-      <ClaimsTransformation Id="GenerateQuestion4ApiBody" TransformationMethod="GenerateJson">
-        <InputClaims>
-          <InputClaim ClaimTypeReferenceId="extension_Question4" TransformationClaimType="inputClaim"/>
-        </InputClaims>
-        <OutputClaims>
-          <OutputClaim ClaimTypeReferenceId="question4ApiBody" TransformationClaimType="outputClaim"/>
+          <OutputClaim ClaimTypeReferenceId="validateUserBody" TransformationClaimType="outputClaim"/>
         </OutputClaims>
       </ClaimsTransformation>
     </ClaimsTransformations>
@@ -222,6 +204,24 @@
     <ClaimsProvider>
       <DisplayName>Local Account</DisplayName>
       <TechnicalProfiles>
+
+        <TechnicalProfile Id="ReadRegisterCode">
+          <DisplayName>Read Member Number</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+            <Item Key="setting.showCancelButton">false</Item>
+          </Metadata>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="RegistrationCode_required" />
+            <OutputClaim ClaimTypeReferenceId="extension_RegistrationCode" />
+          </OutputClaims>
+          <OutputClaimsTransformations>
+            <OutputClaimsTransformation ReferenceId="GenerateValidateUserBody" />
+          </OutputClaimsTransformations>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+
         <TechnicalProfile Id="ReadFormStep1">
           <DisplayName>Read Form Step 1</DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -233,11 +233,9 @@
             <OutputClaim ClaimTypeReferenceId="AskForInformation_header" />
             <OutputClaim ClaimTypeReferenceId="extension_Question1" />
           </OutputClaims>
-          <OutputClaimsTransformations>
-            <OutputClaimsTransformation ReferenceId="GenerateQuestion1ApiBody" />
-          </OutputClaimsTransformations>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
         </TechnicalProfile>
+
         <TechnicalProfile Id="ReadFormStep2">
           <DisplayName>Read Form Step 2</DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -248,11 +246,9 @@
           <OutputClaims>
             <OutputClaim ClaimTypeReferenceId="extension_Question2" />
           </OutputClaims>
-          <OutputClaimsTransformations>
-            <OutputClaimsTransformation ReferenceId="GenerateQuestion2ApiBody" />
-          </OutputClaimsTransformations>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
         </TechnicalProfile>
+
         <TechnicalProfile Id="ReadFormStep3">
           <DisplayName>Read Form Step 3</DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -263,11 +259,9 @@
           <OutputClaims>
             <OutputClaim ClaimTypeReferenceId="extension_Question3" />
           </OutputClaims>
-          <OutputClaimsTransformations>
-            <OutputClaimsTransformation ReferenceId="GenerateQuestion3ApiBody" />
-          </OutputClaimsTransformations>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
         </TechnicalProfile>
+
         <TechnicalProfile Id="ReadFormStep4">
           <DisplayName>Read Form Step 4</DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -278,9 +272,66 @@
           <OutputClaims>
             <OutputClaim ClaimTypeReferenceId="extension_Question4" />
           </OutputClaims>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+
+        <TechnicalProfile Id="ReadRegistrationCode">
+          <DisplayName>Read Registration code</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+            <Item Key="setting.showCancelButton">false</Item>
+          </Metadata>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="RegistrationCode_required" />
+            <OutputClaim ClaimTypeReferenceId="extension_RegistrationCode" />
+          </OutputClaims>
           <OutputClaimsTransformations>
-            <OutputClaimsTransformation ReferenceId="GenerateQuestion4ApiBody" />
+            <OutputClaimsTransformation ReferenceId="GenerateValidateUserBody" />
           </OutputClaimsTransformations>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+
+      </TechnicalProfiles>
+    </ClaimsProvider>
+
+    <ClaimsProvider>
+      <DisplayName>Self Asserted</DisplayName>
+      <TechnicalProfiles>
+        <TechnicalProfile Id="ShowValidationError">
+          <DisplayName>Show Validation Error</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+            <Item Key="setting.showContinueButton">false</Item>
+            <Item Key="setting.showCancelButton">false</Item>
+          </Metadata>
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="RegistrationCode_ValidationError"  DefaultValue="Error al validar el código de registro" AlwaysUseDefaultValue="true"/>
+          </InputClaims>
+          <DisplayClaims>
+            <DisplayClaim ClaimTypeReferenceId="RegistrationCode_ValidationError" />
+          </DisplayClaims>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+
+        <TechnicalProfile Id="CUSTOM-ValidateRegistrationCode">
+          <DisplayName>Get user data</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ServiceUrl">https://b2capidemo.azurewebsites.net/api/validate-registration-code</Item>
+            <Item Key="AuthenticationType">None</Item>
+            <Item Key="SendClaimsIn">Body</Item>
+            <Item Key="AllowInsecureAuthInProduction">true</Item>
+            <Item Key="DefaultUserMessageIfRequestFailed">Cannot process your request right now, please try again later.</Item>
+            <Item Key="ClaimUsedForRequestPayload">validateUserBody</Item>
+          </Metadata>
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="validateUserBody" />
+          </InputClaims>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="extension_isValidUser" PartnerClaimType="isValidUser" />
+          </OutputClaims>
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
         </TechnicalProfile>
       </TechnicalProfiles>
@@ -348,37 +399,49 @@
     <UserJourney Id="SignUpOrSignInCustom">
         <OrchestrationSteps>
 
-            <OrchestrationStep Order="1" Type="CombinedSignInAndSignUp" ContentDefinitionReferenceId="api.signuporsignin">
-            <ClaimsProviderSelections>
-                <ClaimsProviderSelection ValidationClaimsExchangeId="LocalAccountSigninEmailExchange" />
-            </ClaimsProviderSelections>
-            <ClaimsExchanges>
-                <ClaimsExchange Id="LocalAccountSigninEmailExchange" TechnicalProfileReferenceId="SelfAsserted-LocalAccountSignin-Email" />
-            </ClaimsExchanges>
+            <!-- Validate Registration Code -->
+            <OrchestrationStep Order="1" Type="ClaimsExchange">
+              <ClaimsExchanges>
+                <ClaimsExchange Id="ReadRegistrationCode" TechnicalProfileReferenceId="ReadRegistrationCode" />
+              </ClaimsExchanges>
+            </OrchestrationStep>
+            <OrchestrationStep Order="2" Type="ClaimsExchange">
+              <ClaimsExchanges>
+                <ClaimsExchange Id="ValidateUser" TechnicalProfileReferenceId="CUSTOM-ValidateRegistrationCode" />
+              </ClaimsExchanges>
+            </OrchestrationStep>
+            <OrchestrationStep Order="3" Type="ClaimsExchange">
+              <Preconditions>
+                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                  <Value>extension_isValidUser</Value>
+                  <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                  <Value>extension_isValidUser</Value>
+                  <Value>true</Value>
+                  <Action>SkipThisOrchestrationStep</Action>
+                </Precondition>
+              </Preconditions>
+              <ClaimsExchanges>
+                <ClaimsExchange Id="ShowError" TechnicalProfileReferenceId="ShowValidationError" />
+              </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="2" Type="ClaimsExchange">
-            <Preconditions>
-                <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
-                <Value>objectId</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>
-            </Preconditions>
+            <OrchestrationStep Order="4" Type="ClaimsExchange">
             <ClaimsExchanges>
                 <ClaimsExchange Id="SignUpWithLogonEmailExchange" TechnicalProfileReferenceId="LocalAccountSignUpWithLogonEmail" />
             </ClaimsExchanges>
             </OrchestrationStep>
 
             <!-- This step reads any user attributes that we may not have received when in the token. -->
-            <OrchestrationStep Order="3" Type="ClaimsExchange">
+            <OrchestrationStep Order="5" Type="ClaimsExchange">
             <ClaimsExchanges>
                 <ClaimsExchange Id="AADUserReadWithObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
             </ClaimsExchanges>
             </OrchestrationStep>
 
-
             <!--Demo: check if change password is required. If yes, ask the user to reset the password-->
-            <OrchestrationStep Order="4" Type="ClaimsExchange">
+            <OrchestrationStep Order="6" Type="ClaimsExchange">
             <Preconditions>
                 <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
                 <Value>objectId</Value>
@@ -399,7 +462,7 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="5" Type="ClaimsExchange">
+            <OrchestrationStep Order="7" Type="ClaimsExchange">
             <Preconditions>
                 <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
                 <Value>objectId</Value>
@@ -420,7 +483,7 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="6" Type="ClaimsExchange">
+            <OrchestrationStep Order="8" Type="ClaimsExchange">
             <Preconditions>
                 <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
                 <Value>objectId</Value>
@@ -441,7 +504,7 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="7" Type="ClaimsExchange">
+            <OrchestrationStep Order="9" Type="ClaimsExchange">
             <Preconditions>
                 <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
                 <Value>objectId</Value>
@@ -462,7 +525,7 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="8" Type="ClaimsExchange">
+            <OrchestrationStep Order="10" Type="ClaimsExchange">
             <Preconditions>
                 <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
                 <Value>objectId</Value>
@@ -483,7 +546,7 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="9" Type="ClaimsExchange">
+            <OrchestrationStep Order="11" Type="ClaimsExchange">
             <Preconditions>
                 <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
                 <Value>objectId</Value>
@@ -504,7 +567,7 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="10" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+            <OrchestrationStep Order="12" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
 
         </OrchestrationSteps>
         <ClientDefinition ReferenceId="DefaultWeb" />
