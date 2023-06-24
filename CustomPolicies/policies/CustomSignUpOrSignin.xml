@@ -433,147 +433,81 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
+            <OrchestrationStep Order="5" Type="InvokeSubJourney">
+              <JourneyList>
+                <Candidate SubJourneyReferenceId="RetrieveCustomClaims" />
+              </JourneyList>
+            </OrchestrationStep>
+
             <!-- This step reads any user attributes that we may not have received when in the token. -->
-            <OrchestrationStep Order="5" Type="ClaimsExchange">
-            <ClaimsExchanges>
-                <ClaimsExchange Id="AADUserReadWithObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
-            </ClaimsExchanges>
-            </OrchestrationStep>
-
-            <!--Demo: check if change password is required. If yes, ask the user to reset the password-->
             <OrchestrationStep Order="6" Type="ClaimsExchange">
-            <Preconditions>
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
-                <Value>objectId</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>
-                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Value>True</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-            </Preconditions>        
-            <ClaimsExchanges>
-                <ClaimsExchange Id="ReadFormStep1" TechnicalProfileReferenceId="ReadFormStep1" />
-            </ClaimsExchanges>
+              <Preconditions>
+                  <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                  <Value>objectId</Value>
+                  <Action>SkipThisOrchestrationStep</Action>
+                  </Precondition>
+                  <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
+                  <Value>extension_mustAskForInformation</Value>
+                  <Action>SkipThisOrchestrationStep</Action>
+                  </Precondition>            
+                  <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                  <Value>extension_mustAskForInformation</Value>
+                  <Value>True</Value>
+                  <Action>SkipThisOrchestrationStep</Action>
+                  </Precondition>            
+              </Preconditions>
+              <ClaimsExchanges>
+                  <ClaimsExchange Id="AADUserReadWithObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
+              </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="7" Type="ClaimsExchange">
-            <Preconditions>
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
-                <Value>objectId</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>
-                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Value>True</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-            </Preconditions>        
-            <ClaimsExchanges>
-                <ClaimsExchange Id="ReadFormStep2" TechnicalProfileReferenceId="ReadFormStep2" />
-            </ClaimsExchanges>
-            </OrchestrationStep>
-
-            <OrchestrationStep Order="8" Type="ClaimsExchange">
-            <Preconditions>
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
-                <Value>objectId</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>
-                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Value>True</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-            </Preconditions>        
-            <ClaimsExchanges>
-                <ClaimsExchange Id="ReadFormStep3" TechnicalProfileReferenceId="ReadFormStep3" />
-            </ClaimsExchanges>
-            </OrchestrationStep>
-
-            <OrchestrationStep Order="9" Type="ClaimsExchange">
-            <Preconditions>
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
-                <Value>objectId</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>
-                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Value>True</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-            </Preconditions>        
-            <ClaimsExchanges>
-                <ClaimsExchange Id="ReadFormStep4" TechnicalProfileReferenceId="ReadFormStep4" />
-            </ClaimsExchanges>
-            </OrchestrationStep>
-
-            <OrchestrationStep Order="10" Type="ClaimsExchange">
-            <Preconditions>
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
-                <Value>objectId</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>
-                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Value>True</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-            </Preconditions>        
-            <ClaimsExchanges>
-                <ClaimsExchange Id="WriteQuestions" TechnicalProfileReferenceId="AAD-UserWriteQuestionsUsingObjectId" />
-            </ClaimsExchanges>
-            </OrchestrationStep>
-
-            <OrchestrationStep Order="11" Type="ClaimsExchange">
-            <Preconditions>
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
-                <Value>objectId</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>
-                <Precondition Type="ClaimsExist" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-                <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                <Value>extension_mustAskForInformation</Value>
-                <Value>True</Value>
-                <Action>SkipThisOrchestrationStep</Action>
-                </Precondition>            
-            </Preconditions>        
-            <ClaimsExchanges>
-                <ClaimsExchange Id="RemoveAskForInformation" TechnicalProfileReferenceId="AAD-UserRemoveMustAskForInformationUsingObjectId" />
-            </ClaimsExchanges>
-            </OrchestrationStep>
-
-            <OrchestrationStep Order="12" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+            <OrchestrationStep Order="7" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
 
         </OrchestrationSteps>
         <ClientDefinition ReferenceId="DefaultWeb" />
     </UserJourney>
   </UserJourneys>
+  <SubJourneys>
+    <SubJourney Id="RetrieveCustomClaims" Type="Call">
+      <OrchestrationSteps>
+        <OrchestrationStep Order="1" Type="ClaimsExchange">    
+          <ClaimsExchanges>
+              <ClaimsExchange Id="ReadFormStep1" TechnicalProfileReferenceId="ReadFormStep1" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
 
+        <OrchestrationStep Order="2" Type="ClaimsExchange">    
+          <ClaimsExchanges>
+              <ClaimsExchange Id="ReadFormStep2" TechnicalProfileReferenceId="ReadFormStep2" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
+
+        <OrchestrationStep Order="3" Type="ClaimsExchange">     
+          <ClaimsExchanges>
+              <ClaimsExchange Id="ReadFormStep3" TechnicalProfileReferenceId="ReadFormStep3" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
+
+        <OrchestrationStep Order="4" Type="ClaimsExchange">     
+          <ClaimsExchanges>
+              <ClaimsExchange Id="ReadFormStep4" TechnicalProfileReferenceId="ReadFormStep4" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
+
+        <OrchestrationStep Order="5" Type="ClaimsExchange">      
+          <ClaimsExchanges>
+              <ClaimsExchange Id="WriteQuestions" TechnicalProfileReferenceId="AAD-UserWriteQuestionsUsingObjectId" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
+
+        <OrchestrationStep Order="6" Type="ClaimsExchange">       
+          <ClaimsExchanges>
+              <ClaimsExchange Id="RemoveAskForInformation" TechnicalProfileReferenceId="AAD-UserRemoveMustAskForInformationUsingObjectId" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
+      </OrchestrationSteps>
+    </SubJourney>
+  </SubJourneys>
   <RelyingParty>
     <DefaultUserJourney ReferenceId="SignUpOrSignInCustom" />
     <Endpoints>
