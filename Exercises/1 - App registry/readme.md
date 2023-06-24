@@ -29,8 +29,8 @@ En este ejemplo se creará una aplicación web que permitirá realizar las valid
 
 Para habilitar el flujo implícito, sigue estos pasos:
 
-- Selecciona la opción "Autenticación" en la sección "Administrar".
-- En la sección "Flujos de concesión implícita e híbridos", marca los siguientes valores:
+- Selecciona la opción `Autenticación` en la sección `Administrar`.
+- En la sección `Flujos de concesión implícita e híbridos`, marca los siguientes valores:
   - Tokens de acceso.
   - Tokens de id.
 - Haz clic en "Guardar" para registrar los cambios.

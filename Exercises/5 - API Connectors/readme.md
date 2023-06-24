@@ -39,11 +39,11 @@ Los conectores de Api permiten customizar el flujo de login/registro del usuario
 
 10. Sobre el flujo creado, acceder a la seccion `Diseños de página`
 11. Buscar el layout `Página unificada de inicio de sesión o de registro` y marcar la opción `Usar contenido de la página personalizada`
-12. Introducir la url pública de acceso a la página para apuntar al template generado. Puedes usar el [link](https://strworkshopb2c.blob.core.windows.net/main/susi.cshtml)
-13. Guardar los cambios con el botón `Guardar`
+12. Introducir la url pública de acceso a la página para apuntar al template generado. Puedes usar este [link](https://strworkshopb2c.blob.core.windows.net/main/susi.cshtml)
+13. Salvar los cambios con el botón `Guardar`
 14. Acceder a la sección `Conectores de API` del menú lateral
 15. En el paso `Antes de crear el usuario`, seleccionar en el combo el conector creado previamente
-16. Guardar los cambios con el botón `Guardar`
+16. Salvar los cambios con el botón `Guardar`
 17. Lanzar el flujo y realizar un proceso de registro
 18. Validar que no aparece el campo para el atributo `appRoles`
 19. En el token generado, validar que aparece el claim con el atributo `extension_appRoles` y el valor generado
@@ -111,10 +111,10 @@ Los conectores de Api permiten customizar el flujo de login/registro del usuario
 11. Haz clic en la opción `Página unificada de inicio de sesión o de registro`.
 12. En la parte inferior de la página, activa la opción `Usar contenido de la página personalizada`.
 13. Modifica la sección `URI de página personalizado` con la URL pública al archivo `selfAsserted.html`. Puedes utilizar el [enlace](https://strworkshopb2c.blob.core.windows.net/main/selfAsserted.html).
-14. Guarda los cambios con el botón `Guardar`.
+14. Confirma los cambios con el botón `Guardar`.
 15. Configura el conector desde la sección `Conectores de API` en el menú lateral.
 16. Selecciona el conector creado previamente en la sección `Antes de crear el usuario`.
-17. Guarda los cambios con el botón `Guardar`.
+17. Confirma los cambios con el botón `Guardar`.
 18. Lanza el flujo con el botón `Ejecutar flujo de usuario` en la barra superior.
 19. Haz clic en el botón de registro.
 20. Introduce credenciales válidas de registro y completa el Captcha mostrado.
