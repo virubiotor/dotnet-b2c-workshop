@@ -81,6 +81,7 @@
 }
 #attributeVerification #attributeList ul li #email_success.verificationSuccessText {
   float: left;
+  color: rgba(255,255,255,1)!important;
 }
 #attributeVerification #attributeList ul li #email_info {
   float: left;

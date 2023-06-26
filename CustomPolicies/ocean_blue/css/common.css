@@ -12,6 +12,7 @@ body {
 }
 p {
     margin: 0px;
+    color: rgba(255,255,255,1)!important;
 }
 :focus, a:focus {
     outline: none;
@@ -174,6 +175,7 @@ ul {
 }
 label {
   font-weight: 600;
+  color: rgba(255,255,255,1)!important;
 }
 #attributeList ul li label {
   float: left;
