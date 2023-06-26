@@ -24,11 +24,11 @@ Sigue estos pasos para personalizar el branding desde un flujo de usuario:
 1. Desde la página principal del tenant de Azure B2C, selecciona la opción `Flujos de usuario` en la sección `Directivas`.
 2. Selecciona el flujo creado previamente, `SUSI_NOMBREAPELLIDOS`.
 3. En el menú lateral, selecciona `Diseños de página` bajo la sección `Personalizar`.
-4. La página mostrará diferentes configuraciones según el tipo de flujo de usuario creado. En el caso del flujo de inicio de sesión y registro, encontrarás todas las pantallas correspondientes, como inicio de sesión, registro de usuario, autenticación multifactor y restablecimiento de contraseña.
+4. La página mostrará diferentes configuraciones según el tipo de flujo de usuario creado. En el caso del `flujo de inicio de sesión y registro`, encontrarás todas las pantallas correspondientes, como inicio de sesión, registro de usuario, autenticación multifactor y restablecimiento de contraseña.
 5. Verifica que la opción seleccionada es `Página unificada de inicio de sesión o de registro`.
 6. En la parte inferior de la página, activa la opción `Usar contenido de la página personalizada`. Esto permitirá utilizar un template para incluir HTML, CSS y Javascript personalizado en la página seleccionada, así como proporcionar soporte multi-idioma.
 
-Es importante tener en cuenta que Microsoft proporciona [guías sobre el uso de Javascript en estas personalizaciones](https://learn.microsoft.com/en-us/azure/active-directory-b2c/javascript-and-page-layout?pivots=b2c-user-flow#guidelines-for-using-javascript), y el uso de JQuery o Handlebards está limitado a [ciertas versiones](https://learn.microsoft.com/en-us/azure/active-directory-b2c/page-layout#jquery-and-handlebars-versions).
+Microsoft proporciona [guías sobre el uso de Javascript en estas personalizaciones](https://learn.microsoft.com/en-us/azure/active-directory-b2c/javascript-and-page-layout?pivots=b2c-user-flow#guidelines-for-using-javascript), y el uso de JQuery o Handlebards está limitado a [ciertas versiones](https://learn.microsoft.com/en-us/azure/active-directory-b2c/page-layout#jquery-and-handlebars-versions).
 
 **IMPORTANTE: El diseño de las páginas está versionado (actualmente la última versión es la 2.1.10). Es recomendable fijar una versión concreta al utilizar personalizaciones para evitar posibles roturas de compatibilidad. Además, se recomienda actualizar las versiones de las páginas siempre que sea posible.**
 
@@ -53,7 +53,7 @@ Sigue estos pasos para personalizar los idiomas y sus valores desde un flujo de 
 8. En la parte inferior de la opción `Predeterminado`, se muestran las distintas páginas para las que se dispone de traducciones en el flujo correspondiente. Azure B2C ya proporciona traducciones por defecto en cada una de ellas, pero se pueden personalizar.
 9. Busca la opción `Página de registro de cuenta local` y abre el desplegable.
 10. Haz clic en `Descargar valores predeterminados (es)` para descargar la lista de traducciones.
-11. Añade al final del archivo una nueva entrada o utiliza el archivo `spanish.json`:
+11. Modifica la entrada con el identificador `"ElementId": "extension_departmentNOMBREAPELLIDOS"` correspondiente a la propiedad `DisplayName` o utiliza el archivo `spanish.json`:
 ```json
 {
     "ElementType": "ClaimType",
