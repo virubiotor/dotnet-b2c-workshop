@@ -433,14 +433,8 @@
             </ClaimsExchanges>
             </OrchestrationStep>
 
-            <OrchestrationStep Order="5" Type="InvokeSubJourney">
-              <JourneyList>
-                <Candidate SubJourneyReferenceId="RetrieveCustomClaims" />
-              </JourneyList>
-            </OrchestrationStep>
-
             <!-- This step reads any user attributes that we may not have received when in the token. -->
-            <OrchestrationStep Order="6" Type="ClaimsExchange">
+            <OrchestrationStep Order="5" Type="ClaimsExchange">
               <Preconditions>
                   <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
                   <Value>objectId</Value>
@@ -459,6 +453,13 @@
               <ClaimsExchanges>
                   <ClaimsExchange Id="AADUserReadWithObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
               </ClaimsExchanges>
+            </OrchestrationStep>
+
+            
+            <OrchestrationStep Order="6" Type="InvokeSubJourney">
+              <JourneyList>
+                <Candidate SubJourneyReferenceId="RetrieveCustomClaims" />
+              </JourneyList>
             </OrchestrationStep>
 
             <OrchestrationStep Order="7" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
