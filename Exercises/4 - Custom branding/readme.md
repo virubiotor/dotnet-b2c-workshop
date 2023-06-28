@@ -35,7 +35,7 @@ Microsoft proporciona [guías sobre el uso de Javascript en estas personalizacio
 7. Descarga la página desde la [web de Microsoft](https://learn.microsoft.com/en-us/azure/active-directory-b2c/customize-ui-with-html?pivots=b2c-user-flow) con el template `Classic`, o utiliza el archivo `susi.html`.
 8. Modifica la página descargada para incluir como imagen de fondo `background.png` (línea 40). Puedes utilizar [este enlace](https://strworkshopb2c.blob.core.windows.net/main/background.png) o subir la imagen a algún lugar público (Azure Storage, Drive, etc.).
 **IMPORTANTE: No se debe modificar la estructura generada en los templates, ya que es utilizada por B2C para generar dinámicamente los controles necesarios según el tipo de página. Se pueden añadir elementos, pero nunca eliminarlos ni modificar sus identificadores.**
-13. Cambia la URL en `Custom page URI` para que apunte al template generado. Puedes utilizar [este enlace](https://strworkshopb2c.blob.core.windows.net/main/susi.cshtml) o subir la página a algún lugar público. Si deseas habilitar el uso de Javascript en la página, accede al menú de `Propiedades` bajo la sección `Configuración` y activa la opción `Habilitar JavaScript aplicando el diseño de página`.
+13. Cambia la URL en `Custom page URI` para que apunte al template generado. Puedes utilizar [este enlace](https://stvsenterprise.blob.core.windows.net/dotnetmadrid2023/susi.cshtml) o subir la página a algún lugar público. Si deseas habilitar el uso de Javascript en la página, accede al menú de `Propiedades` bajo la sección `Configuración` y activa la opción `Habilitar JavaScript aplicando el diseño de página`.
 14. Guarda los cambios con el botón `Save`.
 15. Lanza el flujo de usuario y valida los cambios.
 
