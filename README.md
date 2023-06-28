@@ -26,8 +26,15 @@ Además, finalizaremos la sesión con una pequeña demostración de las polític
 <br>
 <br>
 
+
 # Ejercicios
 
+Para poder acceder al tenant como colaboradores tenemos creados los siguientes usuarios.
+
+```json
+Usuario: dotnet[1-30]@dotnet2023workshop.onmicrosoft.com
+Contraseña: Test12345!
+```
 A continuación, encontrarás los ejercicios que realizaremos durante el taller:
 
 ### Ejercicio 1: Registro de Aplicación
@@ -84,3 +91,4 @@ En ese ejercicio utilizaremos los conectores Api para customizar el flujo de log
 |          **Victor Rubio Torroba**          |          **Rubén Gómez García**          |
 |          Software Development Engineer              |          Software Development Engineer              |
 |          [Linkedin](https://www.linkedin.com/in/victor-rubio-torroba-b51661a2/)                        |          [Linkedin](https://www.linkedin.com/in/rub%C3%A9n-g%C3%B3mez-garc%C3%ADa-2a2b844a/)                        |
+| [Github](https://github.com/virubiotor) | [Github](https://github.com/Barrankus) |
