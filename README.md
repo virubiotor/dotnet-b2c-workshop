@@ -22,6 +22,7 @@ Además, finalizaremos la sesión con una pequeña demostración de las polític
 
   [Registro](https://dotnet2023workshop.b2clogin.com/dotnet2023workshop.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_CUSTOM_SIGNUP_SIGNIN&client_id=7be29899-4bc7-407a-b67c-e350fc231bb4&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fjwt.ms&scope=openid&response_type=id_token&prompt=login)
 </div>
+El código de registro es <b>DotNetMadrid2023</b>
 
 <br>
 <br>
